@@ -1,0 +1,10 @@
+{
+  "name": "swim-monitor",
+  "version": "1.0.0",
+  "scripts": {
+    "check": "node check-schedule.js"
+  },
+  "dependencies": {
+    "playwright": "^1.45.0"
+  }
+}
