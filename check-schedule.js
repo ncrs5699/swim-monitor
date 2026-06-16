@@ -15,9 +15,11 @@ function sendDiscordNotification(message) {
       hostname: url.hostname,
       path: url.pathname + url.search,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+      timeout: 10000
     }, res => resolve(res.statusCode));
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Discord webhook timed out after 10s')); });
     req.write(payload);
     req.end();
   });
