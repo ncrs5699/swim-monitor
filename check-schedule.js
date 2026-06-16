@@ -18,8 +18,8 @@ function sendDiscordNotification(message) {
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
       timeout: 10000
     }, res => resolve(res.statusCode));
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(new Error('Discord webhook timed out after 10s')); });
+    req.on('error', (err) => { console.warn('Discord notification failed:', err.message); resolve(null); });
+    req.on('timeout', () => { req.destroy(); console.warn('Discord webhook timed out, skipping'); resolve(null); });
     req.write(payload);
     req.end();
   });
