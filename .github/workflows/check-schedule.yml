@@ -1,8 +1,6 @@
 name: Swim Schedule Monitor
 
 on:
-  schedule:
-    - cron: '*/7 * * * *'
   workflow_dispatch:
 
 env:
