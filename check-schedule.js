@@ -41,7 +41,7 @@ async function main() {
   const page = await browser.newPage();
 
   try {
-    await page.goto(SWIM_URL, { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(SWIM_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(3000);
 
     const frames = page.frames();
