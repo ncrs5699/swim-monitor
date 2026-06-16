@@ -15,9 +15,11 @@ function sendDiscordNotification(message) {
       hostname: url.hostname,
       path: url.pathname + url.search,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+      timeout: 10000
     }, res => resolve(res.statusCode));
-    req.on('error', reject);
+    req.on('error', (err) => { console.warn('Discord notification failed:', err.message); resolve(null); });
+    req.on('timeout', () => { req.destroy(); console.warn('Discord webhook timed out, skipping'); resolve(null); });
     req.write(payload);
     req.end();
   });
