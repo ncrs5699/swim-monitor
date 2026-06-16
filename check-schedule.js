@@ -42,7 +42,11 @@ async function main() {
     await page.goto(SWIM_URL, { waitUntil: 'networkidle', timeout: 30000 });
     await page.waitForTimeout(3000);
 
-    const content = await page.evaluate(() => document.body.innerText.trim());
+    const frames = page.frames();
+    const texts = await Promise.all(
+      frames.map(f => f.evaluate(() => document.body?.innerText?.trim() || '').catch(() => ''))
+    );
+    const content = texts.join('\n').trim();
     const hash = crypto.createHash('sha256').update(content).digest('hex');
     const state = loadState();
     const now = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
